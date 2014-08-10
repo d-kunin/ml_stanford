@@ -25,16 +25,14 @@ J = 1/m*sum((-y .* log(H_X) - (1 - y) .* log(1 - H_X))) + lambda/(2*m)*sum(sub_t
 % grad
 grad(1) = 1/m*sum((H_X - y) .* X(:,1));
 
-for i = 2:size(X)(2)
-   grad(i) = 1/m*(H_X - y)' * X(:,i) + lambda/m*theta(i); 
-end
+t1 = 1/m * X(:,2:end)'* (H_X - y);
+t2 = lambda/m*theta(2:end); 
+T = t1 + t2;
 
 % logging
 if (false) 
     printf("theta\n");
     size(theta)
-    printf("sub_theta\n");
-    size(sub_theta)
     printf("X\n");
     size(X)
     printf("y\n");
@@ -47,9 +45,12 @@ if (false)
     size(J)
     printf("grad\n");
     size(grad)
+    T;
+    t1;
+    t2;
 endif
 
-
+grad(2:end) = T;
 
 % =============================================================
 
